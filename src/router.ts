@@ -4,6 +4,7 @@ import { Router } from '@oak/oak/router'
 import { config } from './config.ts'
 
 import { service60s } from './modules/60s.module.ts'
+import { serviceReadhub } from './modules/readhub.module.ts'
 import { serviceAnswer } from './modules/answer/answer.module.ts'
 import { serviceBaike } from './modules/baike.module.ts'
 import { serviceBili } from './modules/bili.module.ts'
@@ -58,6 +59,7 @@ export const appRouter = new Router({
 })
 
 appRouter.get('/60s', service60s.handle())
+appRouter.get('/readhub', serviceReadhub.handle())
 appRouter.get('/answer', serviceAnswer.handle())
 appRouter.get('/baike', serviceBaike.handle())
 appRouter.get('/bili', serviceBili.handle())
