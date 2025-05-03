@@ -15,10 +15,9 @@ class ServiceWikiNews {
         case 'text':
           ctx.response.body = `Wikipedia Current Events (${data.date})\n\n${data.news
             .map((category) => {
-              const items = category.items
-                .map((item) => `  - ${item.text}`)
-                .join('\n')
-              return `${category.title}\n${items}`
+              return `**${category.title}**\n\n${category.items
+                .map((item) => item.text)
+                .join('\n\n')}`
             })
             .join('\n\n')}`
           break
@@ -56,7 +55,9 @@ class ServiceWikiNews {
       }
       
       const html = await response.text()
+      
       const newsCategories = this.#extractNewsContent(html)
+      
       const formattedDate = `${month} ${day}, ${year}`
       const data: WikiNewsItem = {
         date: formattedDate,
@@ -85,6 +86,7 @@ class ServiceWikiNews {
   #extractNewsContent(html: string): NewsCategory[] {
     try {
       const categories: NewsCategory[] = []
+      
       const contentDivs = html.match(/<div class="current-events-content description">([\s\S]*?)<\/div>/g)
       
       if (!contentDivs || contentDivs.length === 0) {
@@ -93,9 +95,11 @@ class ServiceWikiNews {
           items: [{ text: 'No news content sections found in the HTML' }]
         }]
       }
-
+      
       const firstContentDiv = contentDivs[0]
+      
       const categorySections = firstContentDiv.split(/<p><b>/)
+      
       if (categorySections.length <= 1) {
         return [{
           title: 'Uncategorized', 
@@ -120,6 +124,7 @@ class ServiceWikiNews {
         if (titleEndIndex === -1) continue
         
         const categoryTitle = section.substring(0, titleEndIndex).trim()
+        
         const contentStartIndex = section.indexOf('</p>') + 4
         if (contentStartIndex === -1 + 4) continue
         
@@ -162,75 +167,73 @@ class ServiceWikiNews {
         if (itemMatch[1]) {
           const itemHtml = itemMatch[1].trim()
           if (!itemHtml) continue
+          const formattedText = this.#formatListItem(itemHtml)
           
-          const { text, links } = this.#processItemLinks(itemHtml)
-          let finalText = this.#cleanHtml(text)
-          if (links.length > 0) {
-            finalText += ` [${links.join(', ')}]`
-          }
-          
-          if (finalText.trim()) {
-            items.push({ text: finalText.trim() })
-          }
+          items.push({ text: formattedText })
         }
       }
       
       if (items.length === 0) {
         const plainContent = this.#cleanHtml(sectionContent)
         if (plainContent.trim()) {
-          items.push({ text: plainContent.trim() })
+          items.push({ text: `- ${plainContent.trim()}` })
         }
       }
       
       return items
     } catch (error) {
       console.error(`Error extracting items from category ${categoryTitle}:`, error)
-      return [{ text: `Error parsing items: ${error instanceof Error ? error.message : String(error)}` }]
+      return [{ text: `- Error parsing items: ${error instanceof Error ? error.message : String(error)}` }]
     }
   }
   
-  #processItemLinks(html: string): { text: string, links: string[] } {
-    const links: string[] = []
-    const externalLinks: string[] = []
-    const htmlWithoutExternals = html.replace(
-      /<a\s+[^>]*?class="external[^>]*?href="([^"]*)"[^>]*>(.*?)<\/a>/g,
-      (match, href, text) => {
-        if (text && href) {
-          externalLinks.push(`${text || 'Source'} (${href})`)
-        }
-        return ''
-      }
-    )
+  #formatListItem(html: string): string {
+    try {
+
+      let markdown = "- "
+      let processedHtml = html.replace(/<i>(.*?)<\/i>/g, (match, content) => {
+        return `*${content}*`
+      })
+      
+      processedHtml = this.#convertLinksToMarkdown(processedHtml)
+      const cleanedText = processedHtml.replace(/<[^>]*?>/g, '')
+      const decodedText = this.#decodeHtmlEntities(cleanedText)
+      
+      return markdown + decodedText
+    } catch (error) {
+      console.error("Error formatting list item:", error)
+      return `- Error formatting item: ${error instanceof Error ? error.message : String(error)}`
+    }
+  }
+  
+  #convertLinksToMarkdown(html: string): string {
+    let result = html
     
-    const processedHtml = htmlWithoutExternals.replace(
+    result = result.replace(
       /<a\s+(?:[^>]*?\s+)?href="([^"]*)"[^>]*>(.*?)<\/a>/g,
       (match, href, text) => {
-        if (!href || !text) return text || ''
-
+        if (match.includes('class="external')) {
+          return match
+        }
         if (href.startsWith('/')) {
           href = `https://en.wikipedia.org${href}`
         }
-        const linkEntry = `${text} (${href})`
-        if (!links.includes(linkEntry)) {
-          links.push(linkEntry)
-        }
-        
-        return text
+        return `[${text}](${href})`
       }
     )
-    links.push(...externalLinks)
     
-    return { text: processedHtml, links }
+
+    result = result.replace(
+      /<a\s+[^>]*?class="external[^>]*?href="([^"]*)"[^>]*>(.*?)<\/a>/g,
+      (match, href, text) => {
+        return `[(${text})](${href})`
+      }
+    )
+    return result
   }
   
-  #cleanHtml(html: string): string {
-    let processedHtml = html
-      .replace(/<ul[^>]*>([\s\S]*?)<\/ul>/g, ': $1')
-      .replace(/<li[^>]*>([\s\S]*?)<\/li>/g, '• $1 ')
-    
-    let text = processedHtml.replace(/<[^>]*?>/g, '')
-    
-    text = text
+  #decodeHtmlEntities(text: string): string {
+    return text
       .replace(/&amp;/g, '&')
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
@@ -239,12 +242,13 @@ class ServiceWikiNews {
       .replace(/&ndash;/g, "–")
       .replace(/&mdash;/g, "—")
       .replace(/&nbsp;/g, " ")
+  }
+  
+  #cleanHtml(html: string): string {
+    let text = html.replace(/<[^>]*?>/g, '')
+    text = this.#decodeHtmlEntities(text)
     text = text
       .replace(/\s+/g, ' ')
-      .replace(/• •/g, '•')
-      .replace(/: •/g, ': ')
-      .replace(/\s+:/g, ':')
-      .replace(/\s+\./g, '.')
       .trim()
     
     return text
@@ -268,4 +272,10 @@ interface NewsCategory {
 
 interface NewsItem {
   text: string
+}
+
+interface LinkInfo {
+  text: string
+  url: string
+  isExternal: boolean
 }
