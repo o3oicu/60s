@@ -27,6 +27,7 @@ import { serviceOG } from './modules/og.module.ts'
 import { serviceTodayInHistory } from './modules/today-in-history.module.ts'
 import { serviceToutiao } from './modules/toutiao.module.ts'
 import { serviceWeibo } from './modules/weibo.module.ts'
+import { serviceWikiNews } from './modules/wikinews.module.ts'
 import { serviceZhihu } from './modules/zhihu.module.ts'
 
 export const rootRouter = new Router()
@@ -79,6 +80,7 @@ appRouter.get('/maoyan', serviceMaoyan.handle())
 appRouter.get('/today_in_history', serviceTodayInHistory.handle())
 appRouter.get('/toutiao', serviceToutiao.handle())
 appRouter.get('/weibo', serviceWeibo.handle())
+appRouter.get('/wikinews', serviceWikiNews.handle())
 appRouter.get('/zhihu', serviceZhihu.handle())
 
 appRouter.all('/og', serviceOG.handle())
