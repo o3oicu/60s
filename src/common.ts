@@ -1,7 +1,7 @@
 import pkg from '../package.json' with { type: 'json' }
 import crypto from 'node:crypto'
 import { Buffer } from 'node:buffer'
-import { COMMON_MSG, config } from './config.ts'
+import { config } from './config.ts'
 
 import type { BinaryToTextEncoding } from 'node:crypto'
 import type { Request, RouterContext } from '@oak/oak'
@@ -14,10 +14,9 @@ interface FormatOptions {
 type Primitive = boolean | number | string | null | undefined
 
 export class Common {
-  static buildJson(data: boolean | number | string | object | null, code = 200, message = COMMON_MSG) {
+  static buildJson(data: boolean | number | string | object | null, code = 200) {
     return {
       code,
-      message,
       data,
       __debug__: Common.getApiInfo(),
     }

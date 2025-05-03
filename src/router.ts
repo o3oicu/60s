@@ -38,10 +38,6 @@ rootRouter.get('/', (ctx) => {
     {
       api_name: '60s-api',
       api_version: pkg.version,
-      api_docs: 'https://docs.60s-api.viki.moe',
-      author: config.author,
-      user_group: config.group,
-      github_repo: config.github,
       updated: pkg.updateTime,
       updated_at: new Date(pkg.updateTime).getTime(),
       endpoints: Array.from(appRouter.entries(), ([_, v]) => v.path),
