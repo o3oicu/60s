@@ -5,7 +5,7 @@
 一系列 **高质量、开源、可靠、全球 CDN 加速的** 开放 API 集合，使用 [Deno](https://deno.com/) 构建，托管在 [Deno Deploy](https://deno.com/deploy) 上，也支持 [Docker](https://docker.com)、[Cloudflare Workers](https://www.cloudflare.com/zh-cn/developer-platform/products/workers/)、[Bun](https://bun.sh/) 和 [Node.js](https://nodejs.org/) 部署。
 
 > [!WARNING]
-> v1 版本已于 2025/1/15 停止更新，在 [v1-legacy](https://github.com/vikiboss/60s/tree/v1-legacy) 分支上，请尽快迁移至 v2，v1 版本将于 2025/6/31 完全停止服务，届时域名会切换到 v2 版本。
+> v1 版本于 2025/1/15 停止更新并于 2025/7/2 切换到 60s-v1.viki.moe，v2 已切换到 60s.viki.moe。
 
 ## 🤔️ 缘起
 
@@ -25,16 +25,13 @@
 
 主域名: https://60s-api.viki.moe （Deno Deploy，部分地区可能被墙）
 
-> [!TIP]
-> 
-> 如果你只关注 60s 新闻，其 API 格式如下：
->
-> 默认 JSON 格式：https://60s-api.viki.moe/v2/60s
-> 
-> 文字版本：https://60s-api.viki.moe/v2/60s?encoding=text
-> 
-> 图片版本：https://60s-api.viki.moe/v2/60s?encoding=image
-> 
+如果你只关注 60s 新闻，其 API 格式如下：
+
+- 默认 JSON 格式：https://60s-api.viki.moe/v2/60s
+- 文字版本：https://60s-api.viki.moe/v2/60s?encoding=text
+- 图片版本：https://60s-api.viki.moe/v2/60s?encoding=image （重定向到微信公众号链接，存在防盗链）
+- 代理图片版本：https://60s-api.viki.moe/v2/60s?encoding=image-proxy （代理链接，绕过防盗链限制，备用）
+
 > 更多详情请看文档: https://docs.60s-api.viki.moe, 如果对你有帮助，请不要吝啬你的 Star～
 
 - ⏰ 日更资讯
@@ -101,9 +98,20 @@ npm install && node --experimental-strip-types node.ts
 
 ### Cloudflare Workers
 
+> 要求本地 Node.js 环境
+
 ```bash
 npm install && npx wrangler publish
 ```
+
+如果你习惯可视化操作，也可以按照下方步骤操作：
+
+1. [fork](https://github.com/vikiboss/60s/fork) 本仓库
+2. 打开 [workers.cloudflare.com](https://workers.cloudflare.com/)
+3. 按照引导，通过 fork 的仓库创建 Workers 项目，使用默认配置直接部署即可
+4. （可选）绑定自己的域名，或者使用 Cloudflare 提供的免费域名
+  
+> 本仓库内已经放置了预先配好的 Workers 配置，你无需关心配置细节，后续如需更新，只需要同步主仓库的代码即可。
 
 ## 60s 的数据更新策略
 
@@ -139,6 +147,8 @@ npm install && npx wrangler publish
 |          Sundrops          | 1.66  | WeChat |   感谢友友的接口   |
 |        春风伴我余生        | 10.00 | WeChat |         -          |
 |             杰             | 1.00  | WeChat |         -          |
+|            Blue            | 6.66  | WeChat | Blue 祝开发者 6666 |
+|           聆听、           | 10.00 | WeChat | 喝杯咖啡，记得加冰 |
 |            ---             |  ---  |  ---   |        ---         |
 |            *斌             | 12.90 | Alipay |         -          |
 |            *杰             | 20.00 | Alipay |         -          |
