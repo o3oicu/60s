@@ -1,7 +1,7 @@
 import pkg from '../package.json' with { type: 'json' }
 import crypto from 'node:crypto'
 import { Buffer } from 'node:buffer'
-import { COMMON_MSG, config } from './config.ts'
+import { config } from './config.ts'
 
 import type { BinaryToTextEncoding } from 'node:crypto'
 import type { Request, RouterContext } from '@oak/oak'
@@ -16,10 +16,9 @@ type Primitive = boolean | number | string | null | undefined
 export class Common {
   static chromeUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.69'
   
-  static buildJson(data: boolean | number | string | object | null, code = 200, message = COMMON_MSG) {
+  static buildJson(data: boolean | number | string | object | null, code = 200) {
     return {
       code,
-      message,
       data,
       __debug__: Common.getApiInfo(),
     }
