@@ -1,7 +1,7 @@
 import pkg from '../package.json' with { type: 'json' }
 import crypto from 'node:crypto'
 import { Buffer } from 'node:buffer'
-import { config } from './config.ts'
+import { COMMON_MSG, config } from './config.ts'
 
 import type { BinaryToTextEncoding } from 'node:crypto'
 import type { Request, RouterContext } from '@oak/oak'
@@ -16,9 +16,10 @@ type Primitive = boolean | number | string | null | undefined
 export class Common {
   static chromeUA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.69'
   
-  static buildJson(data: boolean | number | string | object | null, code = 200) {
+  static buildJson(data: boolean | number | string | object | null, code = 200, message = COMMON_MSG) {
     return {
       code,
+      message,
       data,
       __debug__: Common.getApiInfo(),
     }
@@ -151,9 +152,6 @@ export class Common {
       api_name: '60s-api',
       api_version: pkg.version,
       api_docs: 'https://docs.60s-api.viki.moe',
-      author: config.author,
-      user_group: config.group,
-      github_repo: config.github,
       updated: pkg.updateTime,
       updated_at: new Date(pkg.updateTime).getTime(),
     }
