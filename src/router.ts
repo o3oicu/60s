@@ -26,9 +26,11 @@ import { serviceMaoyan } from './modules/maoyan.module.ts'
 import { serviceOG } from './modules/og.module.ts'
 import { serviceTodayInHistory } from './modules/today-in-history.module.ts'
 import { serviceToutiao } from './modules/toutiao.module.ts'
+import { serviceWeather } from './modules/weather.module.ts'
 import { serviceWeibo } from './modules/weibo.module.ts'
 import { serviceWikiNews } from './modules/wikinews.module.ts'
 import { serviceZhihu } from './modules/zhihu.module.ts'
+import { serviceLunar } from './modules/lunar/lunar.module.ts'
 
 export const rootRouter = new Router()
 
@@ -78,9 +80,13 @@ appRouter.get('/toutiao', serviceToutiao.handle())
 appRouter.get('/weibo', serviceWeibo.handle())
 appRouter.get('/wikinews', serviceWikiNews.handle())
 appRouter.get('/zhihu', serviceZhihu.handle())
+appRouter.get('/lunar', serviceLunar.handle())
 
 appRouter.all('/og', serviceOG.handle())
 appRouter.all('/hash', serviceHash.handle())
 
 appRouter.all('/fanyi', serviceFanyi.handle())
 appRouter.all('/fanyi/langs', serviceFanyi.langs())
+
+appRouter.get('/weather', serviceWeather.handle())
+appRouter.get('/weather/7d', serviceWeather.handle7d())
