@@ -4,6 +4,7 @@ import { Router } from '@oak/oak/router'
 import { config } from './config.ts'
 
 import { service60s } from './modules/60s.module.ts'
+import { serviceReadhub } from './modules/readhub.module.ts'
 import { serviceAnswer } from './modules/answer/answer.module.ts'
 import { serviceBaike } from './modules/baike.module.ts'
 import { serviceBili } from './modules/bili.module.ts'
@@ -27,6 +28,7 @@ import { serviceTodayInHistory } from './modules/today-in-history.module.ts'
 import { serviceToutiao } from './modules/toutiao.module.ts'
 import { serviceWeather } from './modules/weather.module.ts'
 import { serviceWeibo } from './modules/weibo.module.ts'
+import { serviceWikiNews } from './modules/wikinews.module.ts'
 import { serviceZhihu } from './modules/zhihu.module.ts'
 import { serviceLunar } from './modules/lunar/lunar.module.ts'
 
@@ -38,10 +40,6 @@ rootRouter.get('/', (ctx) => {
     {
       api_name: '60s-api',
       api_version: pkg.version,
-      api_docs: 'https://docs.60s-api.viki.moe',
-      author: config.author,
-      user_group: config.group,
-      github_repo: config.github,
       updated: pkg.updateTime,
       updated_at: new Date(pkg.updateTime).getTime(),
       endpoints: Array.from(appRouter.entries(), ([_, v]) => v.path),
@@ -60,6 +58,7 @@ export const appRouter = new Router({
 })
 
 appRouter.get('/60s', service60s.handle())
+appRouter.get('/readhub', serviceReadhub.handle())
 appRouter.get('/answer', serviceAnswer.handle())
 appRouter.get('/baike', serviceBaike.handle())
 appRouter.get('/bili', serviceBili.handle())
@@ -79,6 +78,7 @@ appRouter.get('/maoyan', serviceMaoyan.handle())
 appRouter.get('/today_in_history', serviceTodayInHistory.handle())
 appRouter.get('/toutiao', serviceToutiao.handle())
 appRouter.get('/weibo', serviceWeibo.handle())
+appRouter.get('/wikinews', serviceWikiNews.handle())
 appRouter.get('/zhihu', serviceZhihu.handle())
 appRouter.get('/lunar', serviceLunar.handle())
 
