@@ -8,7 +8,7 @@
 
 ## 🤔️ 缘起
 
-参考 [这篇文章](https://xlog.viki.moe/60s) 了解更多。
+参考 [这篇文章](https://xlog.viki.moe/60s) 了解更多
 
 ## ⚖️ API 实现原则和使用建议
 
@@ -16,7 +16,7 @@
 - 对日更数据采取缓存加速策略，对用户无感、毫秒级响应
 - 为了追求更快的响应，可查看源码直接使用对应 API 的原数据（但原始数据量大、字段繁多，不易处理）
 
-> 待续
+> 待续。
 
 ## 🌍 60s 看世界接口
 
@@ -25,11 +25,9 @@
 - JSON：https://60s.viki.moe/v2/60s
 - 文字：https://60s.viki.moe/v2/60s?encoding=text
 - 图片：https://60s.viki.moe/v2/60s?encoding=image （重定向到微信公众号链接，存在防盗链）
-- 代理图片：https://60s.viki.moe/v2/60s?encoding=image-proxy （代理链接，绕过防盗链限制，作为备选）
+- 代理图片：https://60s.viki.moe/v2/60s?encoding=image-proxy （代理链接，绕过防盗链限制，备选）
 
 更多详情请看文档: https://docs.60s-api.viki.moe
-
-如果对你有帮助，请不要吝啬你的 Star～
 
 ## 🍱 API 还包含哪些？
 
@@ -53,7 +51,10 @@
   - 🌍 在线翻译（支持 109 种语言）
   - 📡 公网 IP 地址
   - 🐦 链接 [OG](https://ogp.me/) 信息
-  - 🌈 哈希/解压/压缩（包含 `md5`、`base64`、`URL`、`GZIP` 等）
+  - 🌈 哈希/解压/压缩（包含 `md5`/`base64`/`URL`/`GZIP` 等）
+  - 🌦️ 实时天气查询（支持全国城市/地区查询，数据来源 [中国天气网](https://weather.com.cn/)）
+  - 🗓️ 农历日期转换（公历农历互转、天干地支、生肖、节气、节假日等，使用 [tyme4ts](https://github.com/6tail/tyme4ts) 库处理）
+  - 🤖️ 每日 AI 快讯（来自 [AI 工具集](https://ai-bot.cn/daily-ai-news/)）
 - 😄 消遣娱乐
   - 💬 随机 KFC 段子（数据来源 [vikiboss/v50](https://github.com/vikiboss/v50)）
   - 💬 随机一言
@@ -124,9 +125,13 @@ npm install && npx wrangler publish
 
 使用过程中有任何问题或建议，欢迎加入企鹅群反馈: [![群](https://img.shields.io/badge/%E4%BC%81%E9%B9%85%E7%BE%A4-595941841-ff69b4)](https://qm.qq.com/q/RpJXzgfAMG)。
 
+## 🌟 Star 历史
+
+[![Star History Chart](https://api.star-history.com/svg?repos=vikiboss/60s&type=Date)](https://star-history.com/#vikiboss/60s&Date)
+
 ## 💰 赞赏
 
-如果觉得这个项目对你有帮助，欢迎请我喝咖啡 ☕️ ～
+如果觉得这个项目对你有帮助，欢迎请我喝咖啡 ☕️
 
 > 采取**自愿**原则, 收到的赞赏将用于提高开发者积极性和开发环境。
 

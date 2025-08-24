@@ -31,6 +31,7 @@ import { serviceWeibo } from './modules/weibo.module.ts'
 import { serviceWikiNews } from './modules/wikinews.module.ts'
 import { serviceZhihu } from './modules/zhihu.module.ts'
 import { serviceLunar } from './modules/lunar/lunar.module.ts'
+import { serviceAINews } from './modules/ai-news.module.ts'
 
 export const rootRouter = new Router()
 
@@ -81,6 +82,7 @@ appRouter.get('/weibo', serviceWeibo.handle())
 appRouter.get('/wikinews', serviceWikiNews.handle())
 appRouter.get('/zhihu', serviceZhihu.handle())
 appRouter.get('/lunar', serviceLunar.handle())
+appRouter.get('/ai-news', serviceAINews.handle())
 
 appRouter.all('/og', serviceOG.handle())
 appRouter.all('/hash', serviceHash.handle())
@@ -89,4 +91,4 @@ appRouter.all('/fanyi', serviceFanyi.handle())
 appRouter.all('/fanyi/langs', serviceFanyi.langs())
 
 appRouter.get('/weather', serviceWeather.handle())
-appRouter.get('/weather/7d', serviceWeather.handle7d())
+appRouter.get('/weather/forecast', serviceWeather.handleForecast())

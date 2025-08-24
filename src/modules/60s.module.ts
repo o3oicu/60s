@@ -1,7 +1,7 @@
-import { Common } from '../common.ts'
+import { Common, dayjs, TZ_SHANGHAI } from '../common.ts'
+import { SolarDay } from 'tyme4ts'
 
 import type { RouterMiddleware } from '@oak/oak'
-import { Lunar } from '../lunar.ts'
 
 const WEEK_DAYS = ['日', '一', '二', '三', '四', '五', '六']
 
@@ -15,7 +15,8 @@ class Service60s {
 
   handle(): RouterMiddleware<'/60s'> {
     return async (ctx) => {
-      const data = await this.#fetch(ctx.request.url.searchParams.get('date'))
+      const forceUpdate = ctx.request.url.searchParams.has('force-update')
+      const data = await this.#fetch(ctx.request.url.searchParams.get('date'), forceUpdate)
 
       switch (ctx.state.encoding) {
         case 'text': {
@@ -66,34 +67,35 @@ class Service60s {
       .catch(() => fetch(this.getJsDelivrUrl(date)))
 
     if (response.ok) {
-      const now = Date.now()
       const data = await response.json()
 
       if (!data?.news?.length) return null
 
+      const now = dayjs().tz(TZ_SHANGHAI)
+
       return {
         ...data,
         day_of_week: getDayOfWeek(data.date),
-        lunar_date: Lunar.toLunar(new Date(data.date)).formatted,
-        api_updated: Common.localeTime(now),
-        api_updated_at: now,
-      } as DailyNewsItem
+        lunar_date: SolarDay.fromYmd(now.year(), now.month() + 1, now.date())
+          .getLunarDay()
+          .toString()
+          .replace('农历', ''),
+        api_updated: Common.localeTime(now.valueOf()),
+        api_updated_at: now.valueOf(),
+      } satisfies DailyNewsItem
     } else {
       return null
     }
   }
 
-  async #fetch(date?: string | null): Promise<DailyNewsItem> {
+  async #fetch(date?: string | null, forceUpdate = false): Promise<DailyNewsItem> {
     const today = date || Common.localeDate(Date.now()).replace(/\//g, '-')
     const yesterday = Common.localeDate(Date.now() - 24 * 60 * 60 * 1000).replace(/\//g, '-')
-    const cachedItem = this.#cache.get(today)
+    const theDayBeforeYesterday = Common.localeDate(Date.now() - 2 * 24 * 60 * 60 * 1000).replace(/\//g, '-')
 
-    if (cachedItem) return cachedItem
-
-    for (const date of [today, yesterday]) {
+    for (const date of [today, yesterday, theDayBeforeYesterday]) {
       const cache = this.#cache.get(date)
-
-      if (cache) return cache
+      if (cache && !forceUpdate) return cache
 
       const data = await this.tryUrl(date)
 
