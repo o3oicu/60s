@@ -8,7 +8,7 @@
 
 构建于现代技术栈 [Deno](https://deno.com/)，托管在 [Deno Deploy](https://deno.com/deploy)，同时支持 [Docker](https://docker.com)、[Cloudflare Workers](https://www.cloudflare.com/zh-cn/developer-platform/products/workers/)、[Bun](https://bun.sh/) 和 [Node.js](https://nodejs.org/) 等多种部署方式。
 
-## 🌍 看世界 · 每天60秒读懂世界
+## 🌍 读懂世界 · 每天 60 秒读懂世界
 
 本项目的 **核心功能**：获取每日精选新闻，让你快速了解世界大事。
 
@@ -23,11 +23,11 @@ curl "https://60s.viki.moe/v2/60s"
 # 纯文本格式
 curl "https://60s.viki.moe/v2/60s?encoding=text"
 
-# 原图直链 (重定向到微信公众号原图)
-curl "https://60s.viki.moe/v2/60s?encoding=image"
+# 原图直链 (重定向到数据仓库原图直链)
+curl "https://60s.viki.moe/v2/60s?encoding=image" --location --output "$(date +%Y-%m-%d).png"
 
-# 代理直链 (代理请求，绕过防盗链)
-curl "https://60s.viki.moe/v2/60s?encoding=image-proxy"
+# 代理直链 (代理请求，直接返回图片二进制数据)
+curl "https://60s.viki.moe/v2/60s?encoding=image-proxy" --output "$(date +%Y-%m-%d).png"
 ```
 
 **📊 数据特性**
@@ -191,7 +191,7 @@ npm install && npx wrangler publish
 |             Ko.             | 11.66  |   QQ   |                   -                    |
 |           yijiong           | 15.00  |   QQ   |            a cup of coffee             |
 
-> 如有遗漏，欢迎通过 issue 或者 QQ 群 595941841 反馈～
+> 如有遗漏，欢迎通过 issue 或者 QQ 群 595941841 反馈。
 
 </details>
 

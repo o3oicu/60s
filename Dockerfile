@@ -22,7 +22,7 @@ FROM node:lts-alpine AS runner
 
 # 维护信息
 LABEL maintainer="Viki <hi@viki.moe> (https://github.com/vikiboss)"
-LABEL description="⏰ 60s API，每天 60 秒看世界｜一系列 高质量、开源、可靠 的开放 API 集合"
+LABEL description="⏰ 60s API，每天 60 秒读懂世界｜一系列 高质量、开源、可靠 的开放 API 集合"
 
 # 设置工作目录
 WORKDIR /app
@@ -51,4 +51,4 @@ EXPOSE 4399
 #   CMD curl --silent --fail http://127.0.0.1:4399/health -H 'User-Agent: Docker Health Check' || exit 1
 
 # 运行应用
-CMD ["node", "--disable-warning=ExperimentalWarning", "--experimental-transform-types", "node.ts"]
+CMD ["node", "--disable-warning=ExperimentalWarning", "node.ts"]

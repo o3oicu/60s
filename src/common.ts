@@ -43,11 +43,11 @@ export class Common {
     return response
   }
 
-  static requireArguments(name: string | string[], ctx: RouterContext<any, Record<string, any>>) {
-    ctx.response.status = 400
+  static requireArguments(name: string | string[], response: RouterContext<any, Record<string, any>>['response']) {
+    response.status = 400
     const args = Array.isArray(name) ? name : [name]
 
-    ctx.response.body = Common.buildJson(
+    response.body = Common.buildJson(
       null,
       400,
       `参数 ${args.join(', ')} 不能为空。如为 query 参数，请进行必要的 URL 编码`,
@@ -186,9 +186,9 @@ export class Common {
     const { repo, path, branch = 'main', alternatives = [] } = options
 
     const urls = [
+      `https://cdn.jsdmirror.com/gh/${repo}/${path}`,
       `https://raw.githubusercontent.com/${repo}/refs/heads/${branch}/${path}`,
       `https://cdn.jsdelivr.net/gh/${repo}/${path}`,
-      `https://cdn.jsdmirror.com/gh/${repo}/${path}`,
       ...alternatives,
     ]
 

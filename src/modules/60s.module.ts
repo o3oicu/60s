@@ -20,23 +20,54 @@ class Service60s {
 
       switch (ctx.state.encoding) {
         case 'text': {
-          ctx.response.body = `每天 60s 看世界（${data.date}）\n\n${data.news
+          ctx.response.body = `每天 60s 读懂世界（${data.date}）\n\n${data.news
             .map((e, idx) => `${idx + 1}. ${e}`)
             .join('\n')}\n\n${data.tip ? `【微语】${data.tip}` : ''}`
           break
         }
 
-        case 'image':
-          ctx.response.redirect(data.image)
+        case 'markdown': {
+          ctx.response.body = `# 每天 60s 读懂世界\n\n> ${data.date} ${data.day_of_week} ${data.lunar_date}\n\n${data.news
+            .map((e, idx) => {
+              const newsItem = typeof e === 'string' ? { title: e, link: '' } : e
+              return newsItem.link
+                ? `${idx + 1}. [${newsItem.title}](${newsItem.link})`
+                : `${idx + 1}. ${newsItem.title}`
+            })
+            .join(
+              '\n',
+            )}\n\n${data.tip ? `---\n\n**【微语】** *${data.tip}*` : ''}${data.image ? `\n\n![每天 60s 读懂世界](${data.image})` : ''}`
           break
+        }
+
+        case 'image': {
+          // test image url
+          const response = await fetch(data.image, { method: 'HEAD' })
+          ctx.response.redirect(response.ok ? data.image : `https://60s-static.viki.moe/images/${data.date}.png`)
+          break
+        }
 
         case 'image-proxy': {
-          const response = await fetch(data.image)
+          let response: Response | null = await fetch(data.image)
 
-          ctx.response.headers = response.headers
-          ctx.response.body = response.body
-          ctx.response.type = response.type
-          ctx.response.status = response.status
+          if (!response.ok) {
+            response = await Common.tryRepoUrl({
+              repo: 'vikiboss/60s-static-host',
+              path: `static/images/${data.date}.png`,
+              alternatives: [`https://60s-static.viki.moe/images/${data.date}.png`],
+            })
+          }
+
+          if (response) {
+            ctx.response.headers = response.headers
+            ctx.response.body = response.body
+            ctx.response.type = response.type
+            ctx.response.status = response.status
+          } else {
+            ctx.response.status = 404
+            ctx.response.body = 'Image not found'
+          }
+
           break
         }
 
@@ -47,10 +78,6 @@ class Service60s {
         }
       }
     }
-  }
-
-  getJsDelivrUrl(date: string): string {
-    return `https://cdn.jsdelivr.net/gh/vikiboss/60s-static-host/static/60s/${date}.json`
   }
 
   async tryUrl(date: string) {
@@ -107,19 +134,16 @@ export const service60s = new Service60s()
 
 interface DailyNewsItem {
   date: string
-  week: string
   news: {
     title: string
     link: string
   }[]
-  audio: {
-    news: string
-    music: string
-  }
   cover: string
   tip: string
   image: string
   link: string
+  day_of_week: string
+  lunar_date: string
   updated: string
   updated_at: number
   api_updated: string
