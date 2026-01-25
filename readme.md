@@ -2,11 +2,15 @@
 
 ![Update Status](https://github.com/vikiboss/60s-static-host/workflows/schedule/badge.svg) ![GitHub](https://img.shields.io/github/v/release/vikiboss/60s?label=GitHub) ![Docker](https://img.shields.io/docker/v/vikiboss/60s?style=flat&label=Docker) ![Node.js](https://img.shields.io/badge/Node.js-6DA55F?logo=node.js&logoColor=white) ![Bun](https://img.shields.io/badge/Bun-%23000000.svg?logo=bun&logoColor=white) ![Deno](https://img.shields.io/badge/Deno-000000?logo=deno&logoColor=white) [![群](https://img.shields.io/badge/%E4%BC%81%E9%B9%85%E7%BE%A4-595941841-ff69b4)](https://qm.qq.com/q/RpJXzgfAMG)
 
-<a href="https://hellogithub.com/repository/vikiboss/60s" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=8e9af473df2244f59d84b79915298fcc&claim_uid=wXMelR56paDoO2x&theme=dark" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+<a href="https://hellogithub.com/repository/vikiboss/60s" target="_blank" ref="noreferrer noopener" ><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=8e9af473df2244f59d84b79915298fcc&claim_uid=wXMelR56paDoO2x&theme=dark" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
 > 一系列 **高质量、开源、可靠、全球 CDN 加速** 的开放 API 集合，让你用最简单的方式获取最准确的数据。
 
 构建于现代技术栈 [Deno](https://deno.com/)，托管在 [Deno Deploy](https://deno.com/deploy)，同时支持 [Docker](https://docker.com)、[Cloudflare Workers](https://www.cloudflare.com/zh-cn/developer-platform/products/workers/)、[Bun](https://bun.sh/) 和 [Node.js](https://nodejs.org/) 等多种部署方式。
+
+## 🎯 项目起源
+
+本项目最早源于 [这篇文章](https://blog.viki.moe/60s) 中提到的想法。随着项目的发展，逐渐演变成一个多功能的开放 API 平台，旨在为开发者提供便捷的数据获取方式。
 
 ## 🌍 读懂世界 · 每天 60 秒读懂世界
 
@@ -32,7 +36,7 @@ curl "https://60s.viki.moe/v2/60s?encoding=image-proxy" --output "$(date +%Y-%m-
 
 **📊 数据特性**
 
-- **数据源**: 微信公众号，详情参考 [这里](https://github.com/vikiboss/60s-static-host/blob/main/src/config/constants.ts#L1-L5)
+- **数据源**: 微信公众号，详情参考 [这里](https://github.com/vikiboss/60s-static-host/blob/main/src/constants.ts#L4-L12)
 - **更新频率**: 每半小时自动尝试更新，正常情况最晚上午 10 点会更新
 - **数据处理**: [vikiboss/60s-static-host](https://github.com/vikiboss/60s-static-host) 仓库定时抓取
 - **响应速度**: 毫秒级缓存响应，全球 CDN 加速
@@ -138,10 +142,6 @@ npm install && npx wrangler publish
 - **GitHub**: [Issues](https://github.com/vikiboss/60s/issues) (Bug 报告、功能建议)
 - **文档**: [API 文档](https://docs.60s-api.viki.moe) (详细使用说明)
 
-### 🎯 项目起源
-
-本项目最早源于 [这篇文章](https://xlog.viki.moe/60s) 中提到的想法。
-
 ### 📈 项目 Star 历史
 
 [![Star History Chart](https://api.star-history.com/svg?repos=vikiboss/60s&type=Date)](https://star-history.com/#vikiboss/60s&Date)
@@ -187,6 +187,7 @@ npm install && npx wrangler publish
 |             *斌             | 12.90  | Alipay |                   -                    |
 |             *杰             | 20.00  | Alipay |                   -                    |
 |            **杰             |  9.90  | Alipay |                   -                    |
+|             *瑞             | 666.66 | Alipay |               100 杯咖啡               |
 |             ---             |  ---   |  ---   |                  ---                   |
 |             Ko.             | 11.66  |   QQ   |                   -                    |
 |           yijiong           | 15.00  |   QQ   |            a cup of coffee             |
