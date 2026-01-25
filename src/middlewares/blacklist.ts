@@ -18,7 +18,7 @@ export function blacklist(): Middleware {
       ctx.response.body = Common.buildJson(
         null,
         403,
-        `由于滥用等原因，该 IP (${ip}) 已被禁止，如有疑问请联系 ${config.author}`,
+        `由于滥用等原因，该 IP (${ip}) 已被禁止`,
       )
 
       console.log(`[BLACKLIST] Blocked request from IP: ${ip}, URL: ${url}, UA: ${ua}`)

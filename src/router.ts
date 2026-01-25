@@ -4,6 +4,7 @@ import { Common } from './common.ts'
 import { service60s } from './modules/60s.module.ts'
 import { service60sRss } from './modules/60s-rss.module.ts'
 import { serviceAINews } from './modules/ai-news.module.ts'
+import { serviceReadhub } from './modules/readhub.module.ts'
 import { serviceAnswer } from './modules/answer/answer.module.ts'
 import { serviceAwesomeJs } from './modules/awesome-js/awesome-js.module.ts'
 import { serviceBaike } from './modules/baike.module.ts'
@@ -32,6 +33,7 @@ import { serviceTodayInHistory } from './modules/today-in-history.module.ts'
 import { serviceToutiao } from './modules/toutiao.module.ts'
 import { serviceWeather } from './modules/weather.module.ts'
 import { serviceWeibo } from './modules/weibo.module.ts'
+import { serviceWikiNews } from './modules/wikinews.module.ts'
 import { serviceZhihu } from './modules/zhihu.module.ts'
 import { serviceDadJoke } from './modules/dad-joke/dad-joke.module.ts'
 import { serviceHackerNews } from './modules/hacker-news.module.ts'
@@ -77,6 +79,7 @@ export const appRouter = new Router({
 // === 以下为已发布的正式接口 ===
 appRouter.get('/60s', service60s.handle())
 appRouter.get('/60s/rss', service60sRss.handle())
+appRouter.get('/readhub', serviceReadhub.handle())
 appRouter.get('/answer', serviceAnswer.handle())
 appRouter.get('/baike', serviceBaike.handle())
 appRouter.get('/bili', serviceBili.handle())
@@ -95,6 +98,7 @@ appRouter.get('/luck', serviceLuck.handle())
 appRouter.get('/today-in-history', serviceTodayInHistory.handle())
 appRouter.get('/toutiao', serviceToutiao.handle())
 appRouter.get('/weibo', serviceWeibo.handle())
+appRouter.get('/wikinews', serviceWikiNews.handle())
 appRouter.get('/zhihu', serviceZhihu.handle())
 appRouter.get('/lunar', serviceLunar.handle())
 appRouter.get('/ai-news', serviceAINews.handle())
